@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BonTemps.Models.Menu>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @if (User.IsInRole("Admin") || User.IsInRole("Kok"))
+    {@Html.ActionLink("Nieuwe Aanmaken", "Create")}
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Naam)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Omschrijving)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Prijs)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gerechten)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Naam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Omschrijving)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prijs)
+            </td>
+            <td>
+                <ul>
+                    @foreach (var dish in item.Gerechten.OrderBy(i => i.Soort))
+                    {
+                        <li>
+                            @dish.Naam
+                        </li>
+                    }
+                </ul>
+            </td>
+            @if (User.IsInRole("Admin"))
+            {
+            <td>
+                        @Html.ActionLink("Voeg Gerecht Toe", "AddGerecht", new { id = item.Id }) |
+                        @Html.ActionLink("Wijzig", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Verwijder", "Delete", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id })
+            </td>
+            }
+            else { <td></td>}
+        </tr>
+    }
+
+</table>

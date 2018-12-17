@@ -1,0 +1,42 @@
+﻿@model BonTemps.Models.ViewModels.GerechtMenuViewModel
+
+<h2>Add Gerecht</h2>
+
+@using (Html.BeginForm("GerechtToMenu", "Menus", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        @Model.Menu.Naam
+        <br />
+        @Model.Menu.Omschrijving
+        <br />
+        <div class="form-group">
+            <h4>Gerecht</h4>
+            <div id="selectedGerecht">
+                @Html.DropDownListFor(model => model.Gerecht.Id, new SelectList(Model.GerechtList, "Id", "Naam"))
+            </div>
+        </div>
+        <div hidden="hidden">
+            @Html.EditorForModel()
+            @Html.EditorFor(model => model.Menu.Id)
+            @Html.EditorFor(model => model.Gerecht.Id)
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add" />
+            </div>
+        </div>
+    </div>
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(function () {
+            $("#selectedGerecht").on("change", function () {
+                var value = $("#selectedGerecht").val();
+            });
+        });
+    </script>
+}
+

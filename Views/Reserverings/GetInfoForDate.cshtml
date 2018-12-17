@@ -1,0 +1,10 @@
+﻿@model Dictionary<string, int>
+
+<br /><br /><br />
+<ul>
+    @{ foreach (var item in Model)
+        {
+            <li>@item.Key - @item.Value</li>
+        }
+    }
+</ul>

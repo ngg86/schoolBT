@@ -1,0 +1,85 @@
+﻿@model IEnumerable<BonTemps.Models.Couverts>
+
+
+<h2>Info</h2>
+@{ DateTime? previousStarttijd = null; string name = ""; int aantal = 0;}
+@using (Html.BeginForm("GetInfoForDate", "Reserverings"))
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Reservering.Datum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu.Prijs)
+            </th>
+            <th></th>
+        </tr>
+
+        @* De onderstaande code zou eigenlijk in een controller moeten zitten *@
+        @foreach (var item in Model.Where(i => i.Reservering.StartTijd.Value != previousStarttijd))
+        {
+            previousStarttijd = item.Reservering.StartTijd.Value;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reservering.StartTijd.Value)
+                </td>
+                <td>
+                    <ul>
+                        @{
+
+
+                            foreach (var menu in Model.Where(m => m.Reservering.StartTijd.Value == item.Reservering.StartTijd.Value).OrderBy(o => o.Menu.Naam))
+                            {
+                                if (string.IsNullOrEmpty(name)) { name = menu.Menu.Naam; }
+                                //if they're the same, add to aantal and continue
+                                if (menu.Menu.Naam == name)
+                                {
+                                    aantal += menu.Aantal;
+                                    continue;
+
+                                }
+                                //if they're not the same, show name and saved aantal
+                                else
+                                {
+                                    <li>@name : @aantal</li>
+                                    name = menu.Menu.Naam;
+                                    aantal = menu.Aantal;
+
+                                }
+
+                            }
+
+                            // }
+                        }
+
+
+                    </ul>
+                </td>
+                <td>
+                    @{
+                        decimal price = 0;
+                        foreach (var menu in Model.Where(m => m.Reservering.StartTijd.Value == item.Reservering.StartTijd.Value))
+                        {
+                            price += menu.Menu.Prijs * menu.Aantal;
+                        }
+
+                        <p>@price.ToString()</p>
+                    }
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Kok"))
+                    {
+                    }
+
+                    | @Html.ActionLink("Details", "GetInfoForDate", new { id = item.Id })
+
+                </td>
+            </tr>
+        }
+
+    </table>
+}

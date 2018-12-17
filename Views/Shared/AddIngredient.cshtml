@@ -1,0 +1,38 @@
+﻿@model BonTemps.Models.ViewModels.IngredientGerechtViewModel
+
+<h2>Add Ingredient to Gerecht</h2>
+
+@using (Html.BeginForm("IngredientToGerecht", "Gerechts", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        @Model.Gerecht.Naam
+        <br />
+        @Model.Gerecht.Soort
+        <br />
+        <div class="form-group">
+            <h4>Ingredient</h4>
+            <div id="selectedIng">
+                @Html.DropDownListFor(model => model.Ingredient.Id, new SelectList(Model.Ingredients, "Id", "NaamMetEenheid"))
+            </div>
+            <div id="amount">
+                @Html.EditorFor(model => model.Total, new { @class ="col-md-10 form-control"})
+            </div>
+        </div>
+        <div hidden="hidden">
+            @Html.EditorForModel()
+            @Html.EditorFor(model => model.GerechtId)
+            @Html.EditorFor(model => model.Ingredient.Id)
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add" />
+            </div>
+        </div>
+    </div>
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+

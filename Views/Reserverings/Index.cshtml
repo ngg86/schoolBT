@@ -1,0 +1,68 @@
+﻿@model BonTemps.Models.ViewModels.ReserveringCouvertViewMmodel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@{
+    if (TempData.Values.Count > 0)
+    {
+        <p>@TempData["ErrorMessage"].ToString()</p>
+    }
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Reservering.Datum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reservering.StartTijd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reservering.EindTijd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reservering.BesteldeMenus)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Reserveringen)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTijd.Value.TimeOfDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EindTijd.Value.TimeOfDay)
+            </td>
+            <td>
+                <ul>
+                    @{ foreach (var menu in Model.Couverts.Where(m => m.Reservering.Id == item.Id).ToList())
+                        {
+                            <li>@menu.Menu.Naam:   @menu.Aantal</li>
+                        }
+                    }
+                </ul>
+            </td>
+            <td>
+                @Html.ActionLink("AddMenus", "AddMenu", new { id = item.Id }) |
+                @Html.ActionLink("Factuur", "ShowFactuur", new { id = item.Id}) |
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>

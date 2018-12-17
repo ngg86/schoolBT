@@ -1,0 +1,42 @@
+﻿@model BonTemps.Models.Reservering
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Reservering</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Datum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Datum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTijd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartTijd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EindTijd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EindTijd)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Wijzigen", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Terug naar index", "Index")
+</p>

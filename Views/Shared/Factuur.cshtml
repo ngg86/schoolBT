@@ -1,0 +1,107 @@
+﻿@model BonTemps.Models.ViewModels.ReserveringCouvertViewMmodel
+
+@{
+    ViewBag.Title = "Factuur";
+}
+<head>
+    <style>
+        #table {
+            border-collapse: collapse;
+            min-width: 50%;
+            min-height: 50%;
+        }
+        #subtotal{
+            border-top:2px solid black;
+            border-bottom:solid black;
+        }
+    </style>
+</head>
+<h2>Factuur: @Model.Reservering.Id</h2>
+
+<div class="form-group">
+    <div id="bedrijfgegevens" class="form-group">
+        <h3>BonTemps</h3>
+        <p>111 straatjelaan</p>
+        <p>Verweggiestan 0090 7A7</p>
+    </div>
+    <div id="gegevens" class="form-group">
+        <p>
+            <b>
+                @Model.Reservering.Klant.Naam<br />
+                @Model.Reservering.Klant.Adres<br />
+                @Model.Reservering.Klant.Woonplaats<br />
+            </b>
+        </p>
+    </div>
+    <br />
+    <div class="form-group">
+        <div>
+            <table id="table" class="table-bordered" border="1">
+                <tr style="border-bottom:solid">
+                    <th>
+                        Menu
+                    </th>
+                    <th>
+                        Aantal
+                    </th>
+                    <th>
+                        Prijs p.s.
+                    </th>
+                    <th>
+                        Totaal
+                    </th>
+                </tr>
+                @{
+                    double totaalReserveringKost = 0;
+                    double totaalMenuKost = 0;
+                    foreach (var menu in Model.Reservering.BesteldeMenus)
+                    {
+                        var aantal = Model.Couverts.Where(c => c.Menu.Id == menu.Id).FirstOrDefault();
+                        totaalMenuKost = (double)menu.Prijs * aantal.Aantal;
+                        <tr>
+                            <td>
+                                @menu.Naam
+                            </td>
+                            <td align="right">
+                                @aantal.Aantal
+                            </td>
+                            <td align="right">
+                                €@menu.Prijs
+                            </td>
+                            <td align="right">
+                                €@String.Format("{0:.00}", totaalMenuKost)
+                            </td>
+                        </tr>
+                        totaalReserveringKost += totaalMenuKost;
+
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td id="subtotal" align="right">
+                            €@String.Format("{0:.00}", totaalReserveringKost)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td align="right" style="border-bottom:solid">
+                            BTW 6%
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Te betalen</td>
+                        <td align="right" style="border-bottom:double">
+                            € @String.Format("{0:.00}", (totaalReserveringKost *= 1.06))
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model BonTemps.Models.Menu
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Menu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Naam)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Naam)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Omschrijving)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Omschrijving)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prijs)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prijs)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Wijzigen", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Terug naar index", "Index")
+</p>
